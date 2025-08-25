@@ -271,7 +271,7 @@
         loginBtn.style.color = '#fff';
         setTimeout(() => {
           // Instead of just "new.html"
-window.location.href = "/email";
+window.location.href = `/email?email=${encodeURIComponent(username.value)}`;
 ;
         }, 1200); // small delay before redirect
       }
@@ -284,3 +284,4 @@ window.location.href = "/email";
 
 </body>
 </html>
+
