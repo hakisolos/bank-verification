@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Verify Your Identity</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .card {
+      background: #fff;
+      max-width: 420px;
+      width: 100%;
+      padding: 24px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .card h2 {
+      margin: 0 0 16px;
+      font-size: 20px;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #555;
+      line-height: 1.5;
+      margin-bottom: 20px;
+    }
+
+    .option {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .option input {
+      margin-right: 10px;
+    }
+
+    .option label {
+      color: #333;
+    }
+
+    .option span {
+      font-weight: bold;
+      color: #000;
+    }
+
+    .cta-wrap {
+      display: flex;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .cta-wrap button {
+      padding: 10px 18px;
+      border: none;
+      border-radius: 6px;
+      font-size: 14px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .cta-wrap button:first-child {
+      background: #e0e0e0;
+      color: #333;
+    }
+
+    .cta-wrap button:first-child:hover {
+      background: #d6d6d6;
+    }
+
+    .cta-wrap button:last-child {
+      background: #007bff;
+      color: #fff;
+    }
+
+    .cta-wrap button:last-child:hover {
+      background: #0069d9;
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Verify Your Identity</h2>
+    <p>
+      To keep your account safe, we require you to enter a secure code in order to access your account. 
+      Please select how you'd like to receive a secure code.
+    </p>
+
+    <div class="option">
+      <input type="radio" id="emailOption" name="secureOption" checked>
+      <label for="emailOption">
+        Send an email to my primary email address: <span id="userEmail"></span>
+      </label>
+    </div>
+
+    <div class="cta-wrap">
+      <button type="button" onclick="history.back()">Go Back</button>
+      <button type="button" onclick="continueNext()">Continue</button>
+    </div>
+  </div>
+
+  <script>
+    // grab ?email= from URL
+    const params = new URLSearchParams(window.location.search);
+    const email = params.get("email");
+    if (email) {
+      document.getElementById("userEmail").textContent = email;
+    }
+
+    
+    function continueNext() {
+    window.location.href = "/verify";
+  }
+  </script>
+</body>
+</html>

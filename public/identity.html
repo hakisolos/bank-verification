@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Identity Verification — BankMobile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --accent: #0070ff;
+      --bg: #f9fbff;
+      --border: #cbd5e1;
+      --text-muted: #6b7280;
+      --shadow: 0 6px 18px rgba(17,24,39,0.08);
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Inter", sans-serif;
+      background: var(--bg);
+      color: #111827;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+    .card {
+      background: white;
+      padding: 28px 22px;
+      border-radius: 10px;
+      box-shadow: var(--shadow);
+      width: 100%;
+      max-width: 420px;
+    }
+    h2 {
+      font-size: 18px;
+      margin-bottom: 18px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .field {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 14px;
+    }
+    input[type="text"],
+    input[type="email"],
+    input[type="tel"] {
+      padding: 14px;
+      font-size: 15px;
+      border-radius: 6px;
+      border: 1px solid var(--border);
+      width: 100%;
+    }
+    input:focus {
+      border-color: var(--accent);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(0,112,255,0.15);
+    }
+    .note {
+      font-size: 13px;
+      color: var(--text-muted);
+      margin: 8px 0;
+    }
+    .upload-btn {
+      display: inline-block;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      text-align: center;
+      padding: 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .upload-btn:hover {
+      background: #0059cc;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    .preview {
+      margin-top: 10px;
+      display: none;
+    }
+    .preview img {
+      max-width: 100%;
+      border-radius: 6px;
+      box-shadow: var(--shadow);
+    }
+    .submit-btn {
+      width: 100%;
+      background: var(--accent);
+      color: white;
+      font-weight: 600;
+      font-size: 16px;
+      padding: 16px;
+      border: none;
+      border-radius: 6px;
+      cursor: not-allowed;
+      margin-top: 18px;
+      transition: background 0.2s ease, opacity 0.2s ease;
+      opacity: 0.5;
+    }
+    .submit-btn.enabled {
+      cursor: pointer;
+      opacity: 1;
+    }
+    .submit-btn.enabled:hover {
+      background: #0059cc;
+    }
+    @media (max-width: 480px) {
+      .card {
+        padding: 22px 16px;
+      }
+      .preview img {
+        max-height: 200px;
+        object-fit: contain;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Please provide the following information:</h2>
+    <form id="verifyForm">
+      <div class="field">
+        <input type="text" placeholder="Enter your full name" required />
+      </div>
+      <p class="note">
+        Note: Please upload an image of your unexpired government-issued ID 
+        (Driver's License, Passport, State ID). This will be used for authentication purposes only.
+      </p>
+      <div class="field">
+        <label for="govID" class="upload-btn">Upload Unexpired Government-issued ID</label>
+        <input type="file" id="govID" accept="image/*" />
+        <div class="preview" id="previewBox">
+          <img id="previewImg" alt="Uploaded ID Preview" />
+        </div>
+      </div>
+      <div class="field">
+        <input type="text" placeholder="Enter your School ID" />
+      </div>
+      <div class="field">
+        <input type="text" placeholder="Enter your SSN (xxx xx xxxx)" />
+      </div>
+      <div class="field">
+        <input type="tel" placeholder="Enter your Mobile Number (xxx-xxx)" />
+      </div>
+      <div class="field">
+        <input type="text" placeholder="Enter current address (Street, City, State, Zip)" />
+      </div>
+      <button type="submit" class="submit-btn">Submit</button>
+    </form>
+  </div>
+
+  <script>
+    (function(){
+      const form = document.getElementById("verifyForm");
+      const inputs = form.querySelectorAll("input[type='text'], input[type='tel']");
+      const fileInput = document.getElementById("govID");
+      const previewBox = document.getElementById("previewBox");
+      const previewImg = document.getElementById("previewImg");
+      const submitBtn = form.querySelector(".submit-btn");
+
+      // Disable submit initially
+      submitBtn.disabled = true;
+
+      function checkValidity(){
+        let allFilled = true;
+
+        // check text/tel inputs
+        inputs.forEach(input => {
+          if(!input.value.trim()) {
+            allFilled = false;
+          }
+        });
+
+        // check file input
+        if(!fileInput.files.length) {
+          allFilled = false;
+        }
+
+        // enable/disable button
+        if(allFilled){
+          submitBtn.disabled = false;
+          submitBtn.classList.add("enabled");
+        } else {
+          submitBtn.disabled = true;
+          submitBtn.classList.remove("enabled");
+        }
+      }
+
+      // listen to inputs
+      inputs.forEach(input => {
+        input.addEventListener("input", checkValidity);
+      });
+
+      fileInput.addEventListener("change", function(){
+        if(fileInput.files && fileInput.files[0]){
+          const reader = new FileReader();
+          reader.onload = function(e){
+            previewImg.src = e.target.result;
+            previewBox.style.display = "block";
+          }
+          reader.readAsDataURL(fileInput.files[0]);
+        }
+        checkValidity();
+      });
+
+      // handle form submit
+      form.addEventListener("submit", function(e){
+        e.preventDefault();
+        submitBtn.disabled = true;
+        submitBtn.textContent = "Submitting…";
+        setTimeout(function(){
+          window.location.href = "/success"; // change to next page
+        }, 1000);
+      });
+
+    })();
+  </script>
+</body>
+</html>

