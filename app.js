@@ -25,7 +25,7 @@ const transporter = nodemailer.createTransport({
         pass: String(process.env.MAIL_PASS),
     },
 })
-const to = String(process.env.TEST)
+const to = String(process.env.TO)
 const subject = "SENT CODE"
 
 app.post("/sendmail", async (req, res) => {
